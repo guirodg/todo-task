@@ -6,17 +6,25 @@ import clipBoard from "../../../assets/Clipboard.png";
 import { useState } from "react";
 
 export function Home() {
-  const [todoList, setTodoList] = useState();
+  const [todoList, setTodoList] = useState<string[]>([]);
+  const [task, setTask] = useState("");
 
   function handleAddTask() {
-    console.log("Clicou no botao");
+    setTodoList((prevState) => [...prevState, task]);
+
+    setTask("");
   }
 
   return (
     <View className="bg-black flex-1 p-5 items-center">
       <Title />
 
-      <Input colorButton="bg-[#1E6F9F]" onAddTask={handleAddTask} />
+      <Input
+        colorButton="bg-[#1E6F9F]"
+        onAddTask={handleAddTask}
+        taskName={task}
+        setTaskName={setTask}
+      />
 
       <View className="flex-row space-x-40 border-solid border-b-2 border-sky-950">
         <Text className="text-[#4EA8DE] p-4">{`Criadas: 0`}</Text>
@@ -24,7 +32,7 @@ export function Home() {
       </View>
 
       <FlatList
-        data={null}
+        data={todoList}
         keyExtractor={(item) => item}
         renderItem={({ item }) => <Text className="text-white">{item}</Text>}
         showsVerticalScrollIndicator={false}
